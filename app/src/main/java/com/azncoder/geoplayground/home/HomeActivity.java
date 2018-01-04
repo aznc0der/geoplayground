@@ -2,6 +2,7 @@ package com.azncoder.geoplayground.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -102,7 +103,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
                 .make(container, R.string.label_get_delivery_error, Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         snackbar.show();
-        swipeRefreshLayout.setRefreshing(false);
+        runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
@@ -111,7 +112,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
                 .make(container, R.string.label_network_error, Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.red_500));
         snackbar.show();
-        swipeRefreshLayout.setRefreshing(false);
+        runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @SuppressWarnings("unchecked")

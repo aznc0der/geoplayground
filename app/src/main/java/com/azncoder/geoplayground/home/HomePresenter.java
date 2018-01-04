@@ -35,7 +35,7 @@ public class HomePresenter {
         disposableBag.add(Observable.just(1)
                 .subscribeOn(Schedulers.computation())
                 .flatMap(i -> mNetworkService.getDeliveries())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(mLocalService::insertDelivery, new ConsumerWrapper() {
                     @Override
                     public void onServerError() {
