@@ -2,13 +2,11 @@ package com.azncoder.geoplayground.home;
 
 import android.util.Log;
 
-import com.azncoder.geoplayground.data.local.Delivery;
 import com.azncoder.geoplayground.data.local.LocalService;
-import com.azncoder.geoplayground.data.remote.DisposableObserverWrapper;
+import com.azncoder.geoplayground.data.remote.ConsumerWrapper;
 import com.azncoder.geoplayground.data.remote.NetworkService;
 
-import java.util.List;
-
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -36,39 +34,27 @@ public class HomePresenter {
         }
         // add observable to CompositeDisposable so that it can be dispose when presenter (view model) is ready to be destroyed
         // call retrofit client on background thread and update database with response from service using Room
-        disposableBag.add(mNetworkService.getDeliveries()
+        disposableBag.add(Observable.just(1)
+                .subscribeOn(Schedulers.computation())
+                .flatMap(i -> mNetworkService.getDeliveries())
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserverWrapper<List<Delivery>>() {
+                .subscribe(mLocalService::insertDelivery, new ConsumerWrapper() {
                     @Override
-                    public void onSuccess(List<Delivery> deliveries) {
-                        cacheDeliveries(deliveries);
-                        mView.onGetDeliveriesSuccess(deliveries);
+                    public void onServerError() {
+                        mView.showRetry();
                         mView.removeProgress();
                     }
 
                     @Override
-                    public void onResponseError(int code) {
-                        if (code >= 500) {
-                            mView.showRetry();
-                            mView.removeProgress();
-                        }
-                    }
-
-                    @Override
-                    public void onNetworkError(String errMsg) {
-                        mView.onNetworkFailure(errMsg);
+                    public void onNetworkError() {
+                        mView.onNetworkFailure();
                         mView.removeProgress();
                     }
-                }));
+                })
+        );
     }
 
-    private void cacheDeliveries(List<Delivery> deliveries) {
-        if (deliveries.size() > 0) {
-            mLocalService.deleteAllDeliveries();
-            mLocalService.insertDelivery(deliveries);
-        }
-    }
+    private String TAG = "DEBUG";
 
     protected void getDeliveriesFromLocal() {
         disposableBag.add(mLocalService.getDeliveries()
@@ -76,6 +62,7 @@ public class HomePresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(deliveries -> {
                     if (deliveries != null) {
+                        Log.i(TAG, "local subscribe invoked");
                         mView.onGetDeliveriesSuccess(deliveries);
                         mView.removeProgress();
                     } else {

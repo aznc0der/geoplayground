@@ -61,10 +61,8 @@ public class HomeActivity extends BaseActivity implements HomeView {
         ((MainApplication) getApplication()).getComponents().inject(this);
         mPresenter = new HomePresenter(mLocalService, mNetworkService, this);
         if (findViewById(R.id.detailFragment) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in tablet mode.
+            // The detail view will be present only in the large-screen layouts (res/values-w900dp).
+            // If this view is present, then the activity should be in tablet mode.
             isTabletMode = true;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -108,7 +106,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
     }
 
     @Override
-    public void onNetworkFailure(String localizedErrMsg) {
+    public void onNetworkFailure() {
         Snackbar snackbar = Snackbar
                 .make(container, R.string.label_network_error, Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(this, R.color.red_500));

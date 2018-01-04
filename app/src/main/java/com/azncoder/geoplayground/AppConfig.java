@@ -5,11 +5,11 @@ package com.azncoder.geoplayground;
  */
 
 public class AppConfig {
-    private class Production {
+    private class Prod {
         private static final String REST_API_BASE_URL = "http://192.168.57.1:8080/";
     }
 
-    private class Staging {
+    private class Stag {
         private static final String REST_API_BASE_URL = "http://192.168.57.1:8080/";
     }
 

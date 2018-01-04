@@ -16,7 +16,7 @@ public interface HomeView {
 
     void showRetry();
 
-    void onNetworkFailure(String localizedErrMsg);
+    void onNetworkFailure();
 
     void onGetDeliveriesFailure(String localizedErrMsg);
 
