@@ -6,19 +6,19 @@ package com.azncoder.geoplayground;
 
 public class AppConfig {
     private class Prod {
-        private static final String REST_API_BASE_URL = "http://192.168.57.1:8080/";
+        private static final String REST_API_BASE_URL = "http://localhost:8080/";
     }
 
     private class Stag {
-        private static final String REST_API_BASE_URL = "http://192.168.57.1:8080/";
+        private static final String REST_API_BASE_URL = "http://localhost:8080/";
     }
 
     private class Dev {
-        private static final String REST_API_BASE_URL = "http://192.168.57.1:8080/";
+        private static final String REST_API_BASE_URL = "http://localhost:8080/";
     }
 
     private class Local {
-        private static final String REST_API_BASE_URL = "http://192.168.57.1:8080/";
+        private static final String REST_API_BASE_URL = "http://localhost:8080/";
     }
 
     public static final String REST_API_BASE_URL;
