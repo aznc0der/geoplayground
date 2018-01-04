@@ -3,6 +3,10 @@ This app is a demo showcasing a way of implementing offline caching approach wit
 Payload is stored in room then retrieve from it to populate the UI. <br />
 A background task is created to call remote service to get new data then update the database after.
 
+### Configuration
+Please change the REST_API_BASE_URL to the appropriate server URL in AppConfig.java.
+Choose your desire build variants or use ./gradlew assemble to build them all. (Production, Staging, Development and Localhost)
+
 ### Libraries Used
 * facebook/Fresco
 * squareup/okhttp3
