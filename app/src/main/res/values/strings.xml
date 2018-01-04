@@ -1,0 +1,11 @@
+<resources>
+    <string name="title_main_activity">Things to Deliver</string>
+    <string name="title_delivery_detail_activity">Delivery Details</string>
+    <string name="label_get_delivery_error">Cannot retrieve latest Delivery, try pull to refresh.</string>
+    <string name="label_no_delivery">All things delivered.\nHere is a cup of hot coffee.</string>
+    <string name="label_network_error">Cannot connect to network.\nTry reconnect and pull to refresh.</string>
+    <string name="label_retry">Retry</string>
+    <string name="label_loading_delivery">Fetching your deliveries</string>
+    <string name="label_at">%s at %s</string>
+    <string name="label_choose_item">Pick one item on the left to see its detail.</string>
+</resources>
