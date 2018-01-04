@@ -1,7 +1,5 @@
 package com.azncoder.geoplayground.home;
 
-import android.util.Log;
-
 import com.azncoder.geoplayground.data.local.LocalService;
 import com.azncoder.geoplayground.data.remote.ConsumerWrapper;
 import com.azncoder.geoplayground.data.remote.NetworkService;
@@ -54,15 +52,12 @@ public class HomePresenter {
         );
     }
 
-    private String TAG = "DEBUG";
-
     protected void getDeliveriesFromLocal() {
         disposableBag.add(mLocalService.getDeliveries()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(deliveries -> {
                     if (deliveries != null) {
-                        Log.i(TAG, "local subscribe invoked");
                         mView.onGetDeliveriesSuccess(deliveries);
                         mView.removeProgress();
                     } else {
