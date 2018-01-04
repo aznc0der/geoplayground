@@ -4,8 +4,8 @@ Payload is stored in room then retrieve from it to populate the UI. <br />
 A background task is created to call remote service to get new data then update the database after.
 
 ### Configuration
-Please change the REST_API_BASE_URL to the appropriate server URL in AppConfig.java.
-Choose your desire build variants or use ./gradlew assemble to build them all. (Production, Staging, Development and Localhost)
+Please change the REST_API_BASE_URL to the appropriate server URL in AppConfig.java. <br />
+Choose your desire build variants in Androud Studio or use `./gradlew assemble` to build all flavors. (Production, Staging, Development and Localhost)
 
 ### Libraries Used
 * facebook/Fresco
