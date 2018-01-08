@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -14,32 +15,14 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    protected Toolbar mToolbar;
 
     public abstract int getContentViewId();
-
-    public abstract int getToolbarTitle();
-
-    public abstract void renderView();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
         ButterKnife.bind(this);
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        setupSupportActionBar(getSupportActionBar());
-        renderView();
-    }
-
-    private void setupSupportActionBar(ActionBar supportActionBar) {
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayShowTitleEnabled(false);
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
-            ((TextView) mToolbar.findViewById(R.id.title)).setText(getToolbarTitle());
-        }
     }
 
     @Override
