@@ -2,7 +2,6 @@ package com.azncoder.geoplayground.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.azncoder.geoplayground.BaseActivity;
+import com.azncoder.geoplayground.common.BaseActivity;
 import com.azncoder.geoplayground.IntentIdentifier;
 import com.azncoder.geoplayground.MainApplication;
 import com.azncoder.geoplayground.R;
@@ -52,18 +51,12 @@ public class HomeActivity extends BaseActivity implements HomeView {
     }
 
     @Override
-    public int getToolbarTitle() {
-        return R.string.title_main_activity;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MainApplication) getApplication()).getComponents().inject(this);
         mPresenter = new HomePresenter(mLocalService, mNetworkService, this);
-        if (findViewById(R.id.detailFragment) != null) {
-            // The detail view will be present only in the large-screen layouts (res/values-w900dp).
-            // If this view is present, then the activity should be in tablet mode.
+        if (findViewById(R.id.right_fragment) != null) {
+            // Activity in tablet mode if right_fragment is present.
             isTabletMode = true;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -77,14 +70,6 @@ public class HomeActivity extends BaseActivity implements HomeView {
     protected void onStart() {
         super.onStart();
         mPresenter.getDeliveriesFromLocal();
-    }
-
-    @Override
-    public void renderView() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
-        }
     }
 
     @Override
@@ -133,18 +118,17 @@ public class HomeActivity extends BaseActivity implements HomeView {
     @Override
     public void navigateToDetailView(Delivery item) {
         if (isTabletMode) {
-            if (getSupportFragmentManager().findFragmentById(R.id.detailFragment) instanceof EmptyFragment) {
+            if (getSupportFragmentManager().findFragmentById(R.id.right_fragment) instanceof EmptyFragment) {
                 Bundle arguments = new Bundle();
                 arguments.putParcelable(IntentIdentifier.DELIVERY_ITEM, item);
                 DetailFragment fragment = new DetailFragment();
                 fragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.detailFragment, fragment)
+                        .replace(R.id.right_fragment, fragment)
                         .commit();
             } else {
-                DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
-                detailFragment.updateDescription(item);
-                detailFragment.updateCameraPosition(item);
+                DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.right_fragment);
+                detailFragment.updateDescription(item.getDescription(), item.getLocation().getAddress(), item.getImageUrl());
             }
         } else {
             Intent intent = new Intent(HomeActivity.this, DetailActivity.class);

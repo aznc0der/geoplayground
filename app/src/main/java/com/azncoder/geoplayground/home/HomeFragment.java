@@ -1,23 +1,26 @@
 package com.azncoder.geoplayground.home;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.azncoder.geoplayground.R;
+import com.azncoder.geoplayground.common.BaseFragment;
 
 /**
  * Created by aznc0der on 2/1/2018.
  */
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    public int getLayoutViewId() {
+        return R.layout.fragment_home;
+    }
+
+    @Override
+    public int getToolbarTitle() {
+        return R.string.title_main_activity;
+    }
+
+    @Override
+    public boolean enableHomeAsUp() {
+        return false;
     }
 }
