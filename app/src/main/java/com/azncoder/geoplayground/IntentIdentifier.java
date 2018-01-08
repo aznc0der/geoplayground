@@ -6,4 +6,5 @@ package com.azncoder.geoplayground;
 
 public class IntentIdentifier {
     public static final String DELIVERY_ITEM = "delivery_item";
+    public static final String IS_TABLET_MODE = "is_tablet_mode";
 }
