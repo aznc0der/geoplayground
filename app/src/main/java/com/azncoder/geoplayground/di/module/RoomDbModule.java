@@ -19,18 +19,10 @@ import dagger.Provides;
  */
 @Module
 public class RoomDbModule {
-    private DeliveryDatabase mDatabase;
-
-    public RoomDbModule(MainApplication application) {
-        mDatabase = Room.databaseBuilder(application, DeliveryDatabase.class, "Delivery")
-                .fallbackToDestructiveMigration()
-                .build();
-    }
-
     @Provides
     @Singleton
-    DeliveryDatabase providesDeliveryDatabase() {
-        return mDatabase;
+    DeliveryDatabase providesDeliveryDatabase(MainApplication application) {
+        return Room.databaseBuilder(application, DeliveryDatabase.class, "Delivery").fallbackToDestructiveMigration().build();
     }
 
     @Provides
