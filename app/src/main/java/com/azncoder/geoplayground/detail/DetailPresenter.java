@@ -23,7 +23,7 @@ public class DetailPresenter {
         mView.updateDescription(delivery.getDescription(), delivery.getLocation().getAddress(), delivery.getImageUrl());
     }
 
-    void onMapReady() {
+    void drawMarkerOnMap() {
         if (mDelivery != null) {
             mView.addMarkerToMap(new LatLng(mDelivery.getLocation().getLat(), mDelivery.getLocation().getLng()), 20f);
         }

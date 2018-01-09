@@ -15,7 +15,9 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HomeFragment fragment = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+    }
+
+    protected boolean isTabletMode() {
+        return findViewById(R.id.right_fragment) != null;
     }
 }

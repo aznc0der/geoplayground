@@ -58,7 +58,7 @@ public class DetailFragment extends BaseFragment implements DetailView, OnMapRea
 
     @Override
     public boolean enableHomeAsUp() {
-        return true;
+        return !isTabletMode;
     }
 
     @Override
@@ -67,15 +67,16 @@ public class DetailFragment extends BaseFragment implements DetailView, OnMapRea
         ((MainApplication) getActivity().getApplication()).getComponents().with(new DetailFragmentModule(this)).inject(this);
         Delivery delivery = getArguments().getParcelable(IntentIdentifier.DELIVERY_ITEM);
         isTabletMode = getArguments().getBoolean(IntentIdentifier.IS_TABLET_MODE, false);
+        if (isTabletMode) {
+            tvDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        }
+        tvDescription.setMovementMethod(new ScrollingMovementMethod());
+        // init map fragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.support_map_fragment);
+        mapFragment.getMapAsync(this);
         if (delivery != null) {
             mPresenter.setDelivery(delivery);
         }
-        if (!isTabletMode) {
-            tvDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        }
-        tvDescription.setMovementMethod(new ScrollingMovementMethod());
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.support_map_fragment);
-        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -98,9 +99,15 @@ public class DetailFragment extends BaseFragment implements DetailView, OnMapRea
     }
 
     @Override
+    public void refreshUI(Delivery delivery) {
+        mPresenter.setDelivery(delivery);
+        mPresenter.drawMarkerOnMap();
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mPresenter.onMapReady();
+        mPresenter.drawMarkerOnMap();
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(int vectorResId) {

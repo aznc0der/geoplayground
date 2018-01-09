@@ -24,5 +24,5 @@ public interface HomeView {
 
     void updateDetailView(Delivery delivery);
 
-    void initDetailView(Delivery delivery);
+    void initDetailView(Delivery delivery, boolean isTabletMode);
 }

@@ -48,7 +48,7 @@
                 android:layout_toRightOf="@+id/iv_image"
                 android:ellipsize="end"
                 android:gravity="start"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 

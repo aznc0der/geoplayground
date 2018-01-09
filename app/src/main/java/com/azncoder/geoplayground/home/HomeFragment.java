@@ -17,8 +17,6 @@ import com.azncoder.geoplayground.MainApplication;
 import com.azncoder.geoplayground.R;
 import com.azncoder.geoplayground.common.BaseFragment;
 import com.azncoder.geoplayground.data.local.Delivery;
-import com.azncoder.geoplayground.data.local.LocalService;
-import com.azncoder.geoplayground.data.remote.NetworkService;
 import com.azncoder.geoplayground.detail.DetailActivity;
 import com.azncoder.geoplayground.detail.DetailFragment;
 import com.azncoder.geoplayground.detail.EmptyFragment;
@@ -46,7 +44,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
     SwipeRefreshLayout swipeRefreshLayout;
     @Inject
     HomePresenter mPresenter;
-    private boolean isTabletMode;
     private HomeAdapter mAdapter;
 
     @Override
@@ -73,17 +70,14 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (view.findViewById(R.id.right_fragment) != null) {
-            // Activity in tablet mode if right_fragment is present.
-            isTabletMode = true;
-        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new HomeAdapter(it -> {
-            if (isTabletMode) {
+            if (((HomeActivity) getActivity()).isTabletMode()) {
                 if (getActivity().getSupportFragmentManager().findFragmentById(R.id.right_fragment) instanceof EmptyFragment) {
-                    initDetailView((Delivery) it);
+                    initDetailView((Delivery) it, ((HomeActivity) getActivity()).isTabletMode());
+                } else {
+                    updateDetailView(((Delivery) it));
                 }
-                updateDetailView(((Delivery) it));
             } else {
                 navigateToDetailView((Delivery) it);
             }
@@ -139,9 +133,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
     @Override
-    public void initDetailView(Delivery delivery) {
+    public void initDetailView(Delivery delivery, boolean isTabletMode) {
         Bundle arguments = new Bundle();
         arguments.putParcelable(IntentIdentifier.DELIVERY_ITEM, delivery);
+        arguments.putBoolean(IntentIdentifier.IS_TABLET_MODE, isTabletMode);
         DetailFragment fragment = new DetailFragment();
         fragment.setArguments(arguments);
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -151,8 +146,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void updateDetailView(Delivery delivery) {
-        DetailFragment detailFragment = (DetailFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.right_fragment);
-        detailFragment.updateDescription(delivery.getDescription(), delivery.getLocation().getAddress(), delivery.getImageUrl());
+        ((DetailFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.right_fragment)).refreshUI(delivery);
     }
 
 
