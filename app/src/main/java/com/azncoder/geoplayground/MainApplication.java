@@ -28,7 +28,7 @@ public class MainApplication extends Application {
     public void initDaggerComponents(String cacheDir) {
         mComponents = DaggerAppComponents.builder()
                 .appModule(new AppModule(this))
-                .networkModule(new NetworkModule(AppConfig.REST_API_BASE_URL, new File(getCacheDir(), cacheDir)))
+                .networkModule(new NetworkModule(new Environment(BuildConfig.FLAVOR).getBaseUrl(), new File(getCacheDir(), cacheDir)))
                 .roomDbModule(new RoomDbModule())
                 .build();
     }
