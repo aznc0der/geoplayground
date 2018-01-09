@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 /**
  * Created by aznc0der on 3/1/2018.
@@ -22,7 +23,7 @@ public class LocalService {
         return deliveryDao.loadAll();
     }
 
-    public void insertDelivery(List<Delivery> deliveries) {
+    public void insertOrUpdateDeliveries(List<Delivery> deliveries) {
         executor.execute(() -> deliveryDao.insert(deliveries));
     }
 
