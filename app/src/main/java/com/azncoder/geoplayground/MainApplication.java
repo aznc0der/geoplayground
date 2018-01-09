@@ -2,8 +2,8 @@ package com.azncoder.geoplayground;
 
 import android.app.Application;
 
-import com.azncoder.geoplayground.di.Components;
-import com.azncoder.geoplayground.di.DaggerComponents;
+import com.azncoder.geoplayground.di.AppComponents;
+import com.azncoder.geoplayground.di.DaggerAppComponents;
 import com.azncoder.geoplayground.di.module.AppModule;
 import com.azncoder.geoplayground.di.module.NetworkModule;
 import com.azncoder.geoplayground.di.module.RoomDbModule;
@@ -16,7 +16,7 @@ import java.io.File;
  */
 
 public class MainApplication extends Application {
-    public Components mComponents;
+    public AppComponents mComponents;
 
     @Override
     public void onCreate() {
@@ -26,14 +26,14 @@ public class MainApplication extends Application {
     }
 
     public void initDaggerComponents(String cacheDir) {
-        mComponents = DaggerComponents.builder()
+        mComponents = DaggerAppComponents.builder()
                 .appModule(new AppModule(this))
                 .networkModule(new NetworkModule(AppConfig.REST_API_BASE_URL, new File(getCacheDir(), cacheDir)))
                 .roomDbModule(new RoomDbModule())
                 .build();
     }
 
-    public Components getComponents() {
+    public AppComponents getComponents() {
         return mComponents;
     }
 }

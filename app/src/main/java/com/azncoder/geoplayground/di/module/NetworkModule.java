@@ -35,14 +35,14 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Cache providesHttpCache() {
+    Cache provideHttpCache() {
         int cacheSize = 10 * 1024 * 1024;
         return new Cache(cacheFileDir, cacheSize);
     }
 
     @Provides
     @Singleton
-    Gson providesGson() {
+    Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         return gsonBuilder.create();
@@ -50,7 +50,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    OkHttpClient providesOkHttpClient(Cache cache) {
+    OkHttpClient provideOkHttpClient(Cache cache) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.cache(cache);
         if (BuildConfig.DEBUG) {
@@ -63,7 +63,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Retrofit providesRetrofit(Gson gson, OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -75,14 +75,14 @@ public class NetworkModule {
     @Provides
     @Singleton
     @SuppressWarnings("unused")
-    public DeliveryAPI providesAPIService(Retrofit retrofit) {
+    DeliveryAPI providesAPIService(Retrofit retrofit) {
         return retrofit.create(DeliveryAPI.class);
     }
 
     @Provides
     @Singleton
     @SuppressWarnings("unused")
-    public NetworkService providesNetworkService(DeliveryAPI service) {
+    NetworkService providesNetworkService(DeliveryAPI service) {
         return new NetworkService(service);
     }
 }

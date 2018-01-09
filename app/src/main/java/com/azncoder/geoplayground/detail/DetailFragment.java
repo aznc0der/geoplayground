@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.azncoder.geoplayground.IntentIdentifier;
+import com.azncoder.geoplayground.MainApplication;
 import com.azncoder.geoplayground.R;
 import com.azncoder.geoplayground.common.BaseFragment;
 import com.azncoder.geoplayground.data.local.Delivery;
+import com.azncoder.geoplayground.di.module.DetailFragmentModule;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,6 +27,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -37,8 +41,9 @@ public class DetailFragment extends BaseFragment implements DetailView, OnMapRea
     TextView tvDescription;
     @BindView(R.id.iv_image)
     SimpleDraweeView ivImage;
+    @Inject
+    DetailPresenter mPresenter;
     private GoogleMap mMap;
-    private DetailPresenter mPresenter;
     private boolean isTabletMode;
 
     @Override
@@ -59,11 +64,11 @@ public class DetailFragment extends BaseFragment implements DetailView, OnMapRea
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainApplication) getActivity().getApplication()).getComponents().with(new DetailFragmentModule(this)).inject(this);
         Delivery delivery = getArguments().getParcelable(IntentIdentifier.DELIVERY_ITEM);
         isTabletMode = getArguments().getBoolean(IntentIdentifier.IS_TABLET_MODE, false);
         if (delivery != null) {
-            mPresenter = new DetailPresenter(this, delivery);
-            mPresenter.setDeliveryObject();
+            mPresenter.setDelivery(delivery);
         }
         if (!isTabletMode) {
             tvDescription.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);

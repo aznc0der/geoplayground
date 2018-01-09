@@ -21,19 +21,19 @@ import dagger.Provides;
 public class RoomDbModule {
     @Provides
     @Singleton
-    DeliveryDatabase providesDeliveryDatabase(MainApplication application) {
+    DeliveryDatabase provideDeliveryDatabase(MainApplication application) {
         return Room.databaseBuilder(application, DeliveryDatabase.class, "Delivery").fallbackToDestructiveMigration().build();
     }
 
     @Provides
     @Singleton
-    DeliveryDao providesDeliveryDao(DeliveryDatabase deliveryDatabase) {
+    DeliveryDao provideDeliveryDao(DeliveryDatabase deliveryDatabase) {
         return deliveryDatabase.getDeliveryDao();
     }
 
     @Provides
     @Singleton
-    LocalService providesLocalService(DeliveryDao deliveryDao, Executor executor) {
+    LocalService provideLocalService(DeliveryDao deliveryDao, Executor executor) {
         return new LocalService(deliveryDao, executor);
     }
 }

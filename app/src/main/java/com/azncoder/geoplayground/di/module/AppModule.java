@@ -23,13 +23,13 @@ public class AppModule {
 
     @Provides
     @Singleton
-    MainApplication providesApplication() {
+    MainApplication provideApplication() {
         return mApplication;
     }
 
     @Provides
     @Singleton
-    Executor providesExecutor() {
+    Executor provideExecutor() {
         return Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 }
