@@ -22,10 +22,13 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fresco.initialize(this);
-        File cacheFileDir = new File(getCacheDir(), "cache");
+        initDaggerComponents("cache");
+    }
+
+    public void initDaggerComponents(String cacheDir) {
         mComponents = DaggerComponents.builder()
                 .appModule(new AppModule(this))
-                .networkModule(new NetworkModule(AppConfig.REST_API_BASE_URL, cacheFileDir))
+                .networkModule(new NetworkModule(AppConfig.REST_API_BASE_URL, new File(getCacheDir(), cacheDir)))
                 .roomDbModule(new RoomDbModule())
                 .build();
     }
