@@ -39,7 +39,6 @@ public class DetailFragment extends BaseFragment implements DetailView, OnMapRea
     SimpleDraweeView ivImage;
     private GoogleMap mMap;
     private DetailPresenter mPresenter;
-    private Delivery mDelivery;
     private boolean isTabletMode;
 
     @Override
@@ -60,10 +59,10 @@ public class DetailFragment extends BaseFragment implements DetailView, OnMapRea
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mDelivery = getArguments().getParcelable(IntentIdentifier.DELIVERY_ITEM);
+        Delivery delivery = getArguments().getParcelable(IntentIdentifier.DELIVERY_ITEM);
         isTabletMode = getArguments().getBoolean(IntentIdentifier.IS_TABLET_MODE, false);
-        if (mDelivery != null) {
-            mPresenter = new DetailPresenter(this, mDelivery);
+        if (delivery != null) {
+            mPresenter = new DetailPresenter(this, delivery);
             mPresenter.setDeliveryObject();
         }
         if (!isTabletMode) {
