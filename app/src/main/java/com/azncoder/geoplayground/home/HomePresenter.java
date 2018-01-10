@@ -1,8 +1,14 @@
 package com.azncoder.geoplayground.home;
 
+import com.azncoder.geoplayground.R;
+import com.azncoder.geoplayground.data.local.Delivery;
 import com.azncoder.geoplayground.data.local.LocalService;
-import com.azncoder.geoplayground.data.remote.ConsumerWrapper;
 import com.azncoder.geoplayground.data.remote.NetworkService;
+import com.azncoder.geoplayground.data.remote.ObservableWrapper;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,6 +25,7 @@ public class HomePresenter {
     private final HomeView mView;
     private final CompositeDisposable disposableBag;
 
+    @Inject
     public HomePresenter(LocalService localService, NetworkService networkService, HomeView view) {
         mLocalService = localService;
         mNetworkService = networkService;
@@ -30,26 +37,37 @@ public class HomePresenter {
         if (showProgress) {
             mView.showProgress();
         }
-        // add observable to CompositeDisposable so that it can be dispose when presenter (view model) is ready to be destroyed
-        // call retrofit client on background thread and update database with response from service using Room
-        disposableBag.add(Observable.just(1)
+        // update db with response
+        disposableBag.add(mNetworkService.getDeliveries()
                 .subscribeOn(Schedulers.computation())
-                .flatMap(i -> mNetworkService.getDeliveries())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(mLocalService::insertDelivery, new ConsumerWrapper() {
+                .subscribeWith(new ObservableWrapper<List<Delivery>>() {
+                    @Override
+                    public void onSuccess(List<Delivery> o) {
+                        mLocalService.insertOrUpdateDeliveries(o);
+                    }
+
                     @Override
                     public void onServerError() {
-                        mView.showRetry();
-                        mView.removeProgress();
+                        mView.showSnack(R.string.label_get_delivery_error);
                     }
 
                     @Override
                     public void onNetworkError() {
-                        mView.onNetworkFailure();
-                        mView.removeProgress();
+                        mView.showSnack(R.string.label_network_error);
                     }
-                })
-        );
+
+                    @Override
+                    public void onComplete() {
+                        removeProgress();
+                    }
+                }));
+    }
+
+    private void removeProgress() {
+        disposableBag.add(Observable.just(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(i -> mView.removeProgress()));
     }
 
     protected void getDeliveriesFromLocal() {
@@ -59,7 +77,6 @@ public class HomePresenter {
                 .subscribe(deliveries -> {
                     if (deliveries != null) {
                         mView.onGetDeliveriesSuccess(deliveries);
-                        mView.removeProgress();
                     } else {
                         mView.onGetDeliveriesFailure("no cached Delivery entity.");
                     }

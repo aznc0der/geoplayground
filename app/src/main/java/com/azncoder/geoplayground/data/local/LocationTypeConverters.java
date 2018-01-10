@@ -14,17 +14,11 @@ import java.lang.reflect.Type;
 public class LocationTypeConverters {
     @TypeConverter
     public static Location stringToLocation(String json) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<Location>() {
-        }.getType();
-        return gson.fromJson(json, type);
+        return new Gson().fromJson(json, Location.class);
     }
 
     @TypeConverter
     public static String locationToString(Location location) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<Location>() {
-        }.getType();
-        return gson.toJson(location, type);
+        return new Gson().toJson(location, Location.class);
     }
 }

@@ -14,13 +14,15 @@ public interface HomeView {
 
     void removeProgress();
 
-    void showRetry();
-
-    void onNetworkFailure();
+    void showSnack(int resId);
 
     void onGetDeliveriesFailure(String localizedErrMsg);
 
-    void onGetDeliveriesSuccess(List<Delivery> delivery);
+    void onGetDeliveriesSuccess(List<Delivery> deliveries);
 
-    void navigateToDetailView(Delivery item);
+    void navigateToDetailView(Delivery delivery);
+
+    void updateDetailView(Delivery delivery);
+
+    void initDetailView(Delivery delivery, boolean isTabletMode);
 }

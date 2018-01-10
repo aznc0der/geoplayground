@@ -2,8 +2,8 @@ package com.azncoder.geoplayground;
 
 import android.app.Application;
 
-import com.azncoder.geoplayground.di.Components;
-import com.azncoder.geoplayground.di.DaggerComponents;
+import com.azncoder.geoplayground.di.AppComponents;
+import com.azncoder.geoplayground.di.DaggerAppComponents;
 import com.azncoder.geoplayground.di.module.AppModule;
 import com.azncoder.geoplayground.di.module.NetworkModule;
 import com.azncoder.geoplayground.di.module.RoomDbModule;
@@ -16,21 +16,24 @@ import java.io.File;
  */
 
 public class MainApplication extends Application {
-    public Components mComponents;
+    public AppComponents mComponents;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Fresco.initialize(this);
-        File cacheFileDir = new File(getCacheDir(), "cache");
-        mComponents = DaggerComponents.builder()
+        initDaggerComponents("cache");
+    }
+
+    public void initDaggerComponents(String cacheDir) {
+        mComponents = DaggerAppComponents.builder()
                 .appModule(new AppModule(this))
-                .networkModule(new NetworkModule(AppConfig.REST_API_BASE_URL, cacheFileDir))
-                .roomDbModule(new RoomDbModule(this))
+                .networkModule(new NetworkModule(new Environment(BuildConfig.FLAVOR).getBaseUrl(), new File(getCacheDir(), cacheDir)))
+                .roomDbModule(new RoomDbModule())
                 .build();
     }
 
-    public Components getComponents() {
+    public AppComponents getComponents() {
         return mComponents;
     }
 }

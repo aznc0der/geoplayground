@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:baselineAligned="false"
     android:orientation="horizontal"
     tools:context="com.azncoder.geoplayground.home.HomeActivity">
 
     <fragment
-        android:id="@+id/listFragment"
+        android:id="@+id/left_fragment"
         class="com.azncoder.geoplayground.home.HomeFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -17,7 +18,7 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/detailFragment"
+        android:id="@+id/right_fragment"
         class="com.azncoder.geoplayground.detail.EmptyFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"

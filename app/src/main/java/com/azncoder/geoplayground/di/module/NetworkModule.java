@@ -75,14 +75,14 @@ public class NetworkModule {
     @Provides
     @Singleton
     @SuppressWarnings("unused")
-    public DeliveryAPI provideAPIService(Retrofit retrofit) {
+    DeliveryAPI providesAPIService(Retrofit retrofit) {
         return retrofit.create(DeliveryAPI.class);
     }
 
     @Provides
     @Singleton
     @SuppressWarnings("unused")
-    public NetworkService provideNetworkService(DeliveryAPI service) {
+    NetworkService providesNetworkService(DeliveryAPI service) {
         return new NetworkService(service);
     }
 }

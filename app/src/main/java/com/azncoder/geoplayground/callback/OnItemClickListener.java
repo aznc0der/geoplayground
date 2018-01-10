@@ -5,5 +5,5 @@ package com.azncoder.geoplayground.callback;
  */
 
 public interface OnItemClickListener<T> {
-    void onItemClick(T t);
+    void onItemClick(T o);
 }

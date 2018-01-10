@@ -1,10 +1,10 @@
 package com.azncoder.geoplayground.di;
 
-import com.azncoder.geoplayground.detail.DetailActivity;
 import com.azncoder.geoplayground.di.module.AppModule;
+import com.azncoder.geoplayground.di.module.DetailFragmentModule;
+import com.azncoder.geoplayground.di.module.HomeFragmentModule;
 import com.azncoder.geoplayground.di.module.NetworkModule;
 import com.azncoder.geoplayground.di.module.RoomDbModule;
-import com.azncoder.geoplayground.home.HomeActivity;
 
 import javax.inject.Singleton;
 
@@ -16,8 +16,8 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {AppModule.class, NetworkModule.class, RoomDbModule.class})
-public interface Components {
-    void inject(HomeActivity activity);
+public interface AppComponents {
+    HomeComponent with(HomeFragmentModule homeFragmentModule);
 
-    void inject(DetailActivity activity);
+    DetailComponent with(DetailFragmentModule detailFragmentModule);
 }

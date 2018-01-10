@@ -35,15 +35,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView;
         switch (viewType) {
             case TYPE_NO_DELIVERY: {
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_no_delivery, parent, false);
-                return new NoDeliveryCell(itemView);
+                return new NoDeliveryCell(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_no_delivery, parent, false));
             }
             case TYPE_DELIVERY: {
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_delivery, parent, false);
-                return new DeliveryCell(itemView);
+                return new DeliveryCell(LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_delivery, parent, false));
             }
         }
         return super.createViewHolder(parent, viewType);

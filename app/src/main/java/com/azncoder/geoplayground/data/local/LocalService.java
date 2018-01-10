@@ -22,7 +22,7 @@ public class LocalService {
         return deliveryDao.loadAll();
     }
 
-    public void insertDelivery(List<Delivery> deliveries) {
+    public void insertOrUpdateDeliveries(List<Delivery> deliveries) {
         executor.execute(() -> deliveryDao.insert(deliveries));
     }
 
